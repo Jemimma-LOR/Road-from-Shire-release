@@ -133,7 +133,7 @@ if(page==='home')content.innerHTML=heading('Дорога из Шира',`Доб�
 if(page==='map')content.innerHTML=heading('Атлас Средиземья','На пергаменте остаются лишь те дороги, которые вы уже прошли.',`<div class="segmented" aria-label="Цвет карты"><button data-tone="original" class="${!state.tinted?'selected':''}" aria-pressed="${!state.tinted}">Оригинал</button><button data-tone="tinted" class="${state.tinted?'selected':''}" aria-pressed="${state.tinted}">Тонированная карта</button></div>`)+mapMarkup()+`<div class="map-note"><span class="map-legend">● Открытые локации &nbsp; ● Вы здесь &nbsp; ━ Пройденный путь</span><span>${escapeHTML(JOURNEY.geography.note)}</span></div>`;
 if(page==='journal')content.innerHTML=heading('Дневник','Каждый день — ещё одна строка вашей истории.',`<button class="primary" data-action="steps">＋ Записать шаги</button>`)+`<div class="journal-grid"><section class="panel journal-records"><h3>Записи путешественника</h3><div class="journal-scroll" tabindex="0" role="region" aria-label="Записи шагов по датам"><table><thead><tr><th>ДАТА</th><th>ШАГИ</th><th></th></tr></thead><tbody>${Object.entries(state.records).sort(([a],[b])=>b.localeCompare(a)).map(([date,steps])=>`<tr><td>${dateLabel(date)}</td><td>${n(steps)}</td><td><button class="text-button" data-edit="${date}" aria-label="Изменить запись за ${dateLabel(date)}">Изменить</button></td></tr>`).join('')}</tbody></table></div></section><section class="panel"><span class="eyebrow">ПУТЬ В ЦИФРАХ</span><h2>${km()} км за плечами</h2><p class="muted">${n(physicalTotal())} шагов · ${Object.keys(state.records).length} дня с записями</p><p class="muted">Событий просмотрено: ${state.viewed.length}</p></section></div><h2>Страницы путешествия</h2>`+archive();
 if(page==='hall')content.innerHTML=heading('Коллекция путешествия','Находки, реликвии и достижения, собранные по дороге.')+`<div class="cards">${events.filter(e=>e.reward).map(e=>{const unlocked=state.rewards.includes(e.reward.id);return `<article class="relic ${unlocked?'':'locked'}"><div class="medallion">${unlocked&&optionalFor(e)?artifactIcon(resultCard(optionalFor(e))):unlocked?e.reward.icon:'◇'}</div><span class="eyebrow">${unlocked?e.reward.kind:'ЕЩЁ НЕ НАЙДЕНО'}</span><h3>${unlocked?e.reward.name:'Тайна дороги'}</h3><p>${unlocked?e.reward.description:'Продолжайте путь: дорога хранит свои подарки.'}</p>${unlocked?`<button class="text-button" data-event="${optionalFor(e)?.resultId||e.id}">Вспомнить историю ↗</button>`:''}</article>`;}).join('')}</div>`;
-if(page==='settings')content.innerHTML=`<div class="settings-layout"><figure class="settings-traveler"><img src="assets/illustrations/traveler-welcome.png" alt="Путешественница на тропе в Шире" width="1090" height="1443"></figure><div class="settings">${heading('Настройки','Несколько деталей перед следующей дорогой.')}<form id="settings-form" class="panel"><h3>О путешественнике</h3><label>Имя путешественника<input name="name" value="${escapeHTML(state.name)}" maxlength="60"></label><label><input type="checkbox" name="tinted" ${state.tinted?'checked':''}>Мягкая цветокоррекция карты</label><button class="primary" type="submit">Применить настройки</button><div class="settings-status" role="status"></div></form><section class="panel"><h3>Сохранение и восстановление</h3><p class="muted">Сохраните своё путешествие в файл, чтобы перенести его на другой компьютер или восстановить прогресс. Данные хранятся только в вашем браузере.</p><div class="actions backup-actions"><button type="button" class="secondary" data-backup-export>Экспортировать сохранение</button><button type="button" class="secondary" data-backup-import>Импортировать сохранение</button></div><p class="backup-status settings-status" role="status"></p></section></div></div>`;
+if(page==='settings')content.innerHTML=`<div class="settings-layout"><figure class="settings-traveler"><img src="assets/illustrations/traveler-welcome.png" alt="Путешественница на тропе в Шире" width="1090" height="1443"></figure><div class="settings">${heading('Настройки','Несколько деталей перед следующей дорогой.')}<form id="settings-form" class="panel"><h3>О путешественнике</h3><label>Имя путешественника<input name="name" value="${escapeHTML(state.name)}" maxlength="60"></label><label><input type="checkbox" name="tinted" ${state.tinted?'checked':''}>Мягкая цветокоррекция карты</label><button class="primary" type="submit">Применить настройки</button><div class="settings-status" role="status"></div></form><section class="panel"><h3>Сохранение и восстановление</h3><p class="muted">Сохраните своё путешествие в файл, чтобы перенести его на другой компьютер или восстановить прогресс. Данные хранятся только в вашем браузере.</p><div class="actions backup-actions"><button type="button" class="secondary" data-backup-export>Экспортировать сохранение</button><button type="button" class="secondary" data-backup-import>Импортировать сохранение</button></div><p class="backup-status settings-status" role="status"></p></section><section class="panel"><h3>Начать путешествие заново</h3><p class="muted">Все записи шагов, открытые истории, находки и решения будут удалены. Перед сбросом рекомендуем экспортировать сохранение.</p><button type="button" class="secondary reset-danger" data-reset-progress>Сбросить прогресс</button></section></div></div>`;
 syncRouteAnimation();
 observeMapPreview();
 }
@@ -239,6 +239,33 @@ function initialize(){
  else{const draft=state.onboardingDraft;welcomeName=draft?.name??state.name;welcomeStep=draft?.step??1;welcomeSteps=draft?.steps??null;welcomeDate=draft?.date??null;setWelcomeActive(true);renderWelcome();}
 }
 
+// The dialog never changes state until the explicit confirmation succeeds.
+const resetDialog=document.querySelector('#reset-dialog'),resetError=document.querySelector('#reset-error'),resetConfirm=document.querySelector('#reset-confirm');
+let resetBusy=false,resetStartedOutside=false,resetOpener=null;
+function cancelReset(){if(resetBusy)return;resetDialog.close();resetError.textContent='';resetStartedOutside=false;resetOpener?.focus();}
+document.addEventListener('click',e=>{const button=e.target.closest('[data-reset-progress]');if(!button||resetBusy)return;resetOpener=button;resetError.textContent='';resetStartedOutside=false;resetConfirm.disabled=false;resetDialog.showModal();document.querySelector('#reset-cancel').focus();});
+document.querySelector('#reset-cancel').addEventListener('click',cancelReset);
+document.querySelector('#reset-close').addEventListener('click',cancelReset);
+resetDialog.addEventListener('cancel',e=>{e.preventDefault();cancelReset();});
+const outsideReset=e=>{const r=resetDialog.getBoundingClientRect();return e.target===resetDialog&&(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom);};
+resetDialog.addEventListener('pointerdown',e=>{resetStartedOutside=e.button===0&&outsideReset(e);});
+resetDialog.addEventListener('pointercancel',()=>{resetStartedOutside=false;});
+resetDialog.addEventListener('click',e=>{if(resetStartedOutside&&outsideReset(e))cancelReset();resetStartedOutside=false;});
+resetConfirm.addEventListener('click',()=>{
+ if(resetBusy||!resetDialog.open)return;
+ resetBusy=true;resetConfirm.disabled=true;
+ const result=JourneyStorage.reset();
+ if(!result.ok){resetError.textContent=result.error;resetBusy=false;resetConfirm.disabled=false;return;}
+ // Replace the live object too: no handler can save the previous journey again.
+ for(const key of Object.keys(state))delete state[key];Object.assign(state,result.state);
+ queue=[];activeEvent=null;eventReturn=null;page='home';
+ cancelAnimationFrame(routeFrame);routeFrame=0;shownRouteDistance=0;routeTarget=0;
+ welcomeStep=1;welcomeName='';welcomeSteps=null;welcomeDate=null;welcomeStarting=false;
+ document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());
+ resetDialog.close();
+ render();const welcome=document.querySelector('#welcome');welcome.hidden=false;welcome.classList.remove('leaving');setWelcomeActive(true);renderWelcome();
+ location.reload();
+});
 JourneyBackup.bind(()=>state);
 initialize();
 

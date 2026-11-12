@@ -46,5 +46,26 @@
    return {ok:false,error:rolledBack?'Не удалось восстановить данные. Текущий прогресс сохранён.':'Не удалось подтвердить восстановление данных и выполнить откат. Не закрывайте страницу: прежнее прохождение осталось в памяти. Экспортируйте его; резервная копия также сохранена перед импортом.'};
   }
  }
- root.JourneyStorage={load,save,valid,serialize,restore,KEY,LEGACY_KEY,VERSION};
+ // Explicitly confirmed reset only. Rollback values live in memory until verification.
+ function reset(){
+  const keys=[KEY,KEY+'.before-import',LEGACY_KEY],previous=new Map();let attempted=false;
+  try{
+   const state=serialize(root.Progress.initial());if(!valid(state))throw Error('invalid');
+   for(const key of keys)previous.set(key,root.localStorage.getItem(key));
+   const encoded=JSON.stringify(state);attempted=true;
+   root.localStorage.setItem(KEY,encoded);
+   if(root.localStorage.getItem(KEY)!==encoded)throw Error('verification');
+   for(const key of keys.slice(1))root.localStorage.removeItem(key);
+   if(root.localStorage.getItem(KEY)!==encoded||keys.slice(1).some(key=>root.localStorage.getItem(key)!==null))throw Error('verification');
+   blocked=false;return {ok:true,state};
+  }catch(error){
+   let rolledBack=true;
+   if(attempted)for(const [key,value] of previous){try{
+    if(root.localStorage.getItem(key)!==value){if(value===null)root.localStorage.removeItem(key);else root.localStorage.setItem(key,value);}
+    if(root.localStorage.getItem(key)!==value)rolledBack=false;
+   }catch(rollbackError){rolledBack=false;}}
+   return {ok:false,error:rolledBack?'Не удалось сбросить прогресс. Прежнее сохранение не изменено. Проверьте разрешение на хранение данных и попробуйте снова.':'Не удалось завершить сброс и подтвердить откат. Не закрывайте страницу: прежнее прохождение осталось в памяти. Отмените сброс и экспортируйте сохранение.'};
+  }
+ }
+ root.JourneyStorage={load,save,valid,serialize,restore,reset,KEY,LEGACY_KEY,VERSION};
 })(typeof window==='undefined'?globalThis:window);

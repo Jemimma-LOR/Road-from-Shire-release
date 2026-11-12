@@ -47,3 +47,6 @@
 .optional-actions{display:flex;flex-direction:column;gap:10px}.optional-actions .secondary{width:100%}.secret-emblem{width:112px;height:112px;margin:20px auto 28px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;font-size:64px;color:var(--gold);background:#244b3926;box-shadow:0 0 24px #bb985714}.archive-artifact{height:160px;flex:0 0 160px;display:grid;place-items:center;font-size:64px;color:var(--gold);background:#244b3926}
 .secret-emblem img,.archive-artifact img,.medallion img{display:block;width:100%;height:100%;object-fit:contain;flex:none}
 .backup-actions{flex-wrap:wrap}.backup-actions button{flex:1 1 200px}#backup-dialog-body{white-space:pre-line;overflow-wrap:anywhere}#backup-error{color:#e6ac84}
+
+/* Progress reset: existing panel and dialog styling, restrained warning accent. */
+.reset-danger{border-color:#99675a;color:#e2b8a8}.reset-danger:hover{background:#75483d40;border-color:#b17c68}.reset-heading{display:flex;align-items:flex-start;gap:16px}.reset-heading h2{flex:1}.reset-heading button{font-size:28px;line-height:1;padding:0 6px}#reset-error{color:#e6ac84}#reset-dialog .actions{flex-wrap:wrap}
