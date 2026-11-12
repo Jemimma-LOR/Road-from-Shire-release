@@ -1,0 +1,144 @@
+{
+  "version": 1,
+  "events": [
+    {
+      "id": "CAVE-01",
+      "type": "cave",
+      "eventId": "bree-014",
+      "segment": 10,
+      "order": 14,
+      "activationSteps": 244000,
+      "costSteps": 4000,
+      "rewardId": "bree-014-reward",
+      "rewardText": "Секрет · «Старинный медальон» — Древняя реликвия из скрытой погребальной камеры.",
+      "badgePrompt": "Потемневший овальный бронзовый медальон со стёртым растительным рельефом и зелёной патиной, найденный в древнем кургане.",
+      "proposalImage": "assets/illustrations/bree/bree-014.webp",
+      "resultId": "CAVE-01-FIND",
+      "resultIcon": null,
+      "resultImage": null,
+      "resultPlaceholder": null,
+      "choices": {
+        "accept": "Исследовать",
+        "decline": "Продолжить путь"
+      },
+      "source": {
+        "sheet": "2. Старый лес и Бри",
+        "eventNumber": 14,
+        "optionalId": "CAVE-01"
+      }
+    },
+    {
+      "id": "CAVE-02",
+      "type": "cave",
+      "eventId": "lonelylands-015",
+      "segment": 14,
+      "order": 15,
+      "activationSteps": 440000,
+      "costSteps": 6667,
+      "rewardId": "lonelylands-015-reward",
+      "rewardText": "Секрет · «Реликвия путника» — Старинная дорожная брошь, найденная в потайной расщелине.",
+      "badgePrompt": "Узкая серебряная дорожная брошь с листовым узором, потускневший металл, следы земли и времени.",
+      "proposalImage": "assets/illustrations/lonely-lands/lonelylands-015.webp",
+      "resultId": "CAVE-02-FIND",
+      "resultIcon": null,
+      "resultImage": null,
+      "resultPlaceholder": null,
+      "choices": {
+        "accept": "Исследовать",
+        "decline": "Продолжить путь"
+      },
+      "source": {
+        "sheet": "3. Одинокие земли",
+        "eventNumber": 15,
+        "optionalId": "CAVE-02"
+      }
+    },
+    {
+      "id": "CAVE-03",
+      "type": "cave",
+      "eventId": "rivendell-028",
+      "segment": 20,
+      "order": 28,
+      "activationSteps": 878667,
+      "costSteps": 5333,
+      "rewardId": "rivendell-028-reward",
+      "rewardText": "Секрет · «Гномий жетон» — Тяжёлая монета с руническим клеймом из забытого грота.",
+      "badgePrompt": "Тяжёлая восьмиугольная гномья монета из тёмного металла, лаконичное руническое клеймо и потёртые края, без читаемого текста.",
+      "proposalImage": "assets/illustrations/rivendell/rivendell-028.webp",
+      "resultId": "CAVE-03-FIND",
+      "resultIcon": null,
+      "resultImage": null,
+      "resultPlaceholder": null,
+      "choices": {
+        "accept": "Исследовать",
+        "decline": "Продолжить путь"
+      },
+      "source": {
+        "sheet": "4. К Ривенделлу",
+        "eventNumber": 28,
+        "optionalId": "CAVE-03"
+      }
+    },
+    {
+      "id": "CAVE-04",
+      "type": "cave",
+      "eventId": "misty-015",
+      "segment": 25,
+      "order": 15,
+      "activationSteps": 1156333,
+      "costSteps": 2667,
+      "rewardId": "misty-015-reward",
+      "rewardText": "Секрет · «Маленький каменный ключ» — Каменный ключ, найденный в заброшенной боковой галерее.",
+      "badgePrompt": "Короткий загадочный ключ из тёмного минерала с квадратной бородкой, потёртые гномьи насечки и сколы.",
+      "proposalImage": "assets/illustrations/misty-mountains/misty-015.webp",
+      "resultId": "CAVE-04-FIND",
+      "resultIcon": null,
+      "resultImage": null,
+      "resultPlaceholder": null,
+      "choices": {
+        "accept": "Исследовать",
+        "decline": "Продолжить путь"
+      },
+      "source": {
+        "sheet": "5. Мглистые горы",
+        "eventNumber": 15,
+        "optionalId": "CAVE-04"
+      }
+    },
+    {
+      "id": "EAGLE-01",
+      "type": "flight",
+      "eventId": "misty-023",
+      "segment": 27,
+      "order": 23,
+      "activationSteps": 1240187,
+      "costSteps": 0,
+      "rewardId": "misty-023-reward",
+      "rewardText": "Секрет · «Крылья над долиной» — Памятное золотое перо после неожиданного полёта на орлах.",
+      "badgePrompt": "Длинное золотисто-бурое орлиное перо, закреплённое в маленькой круглой оправе из состаренной бронзы.",
+      "proposalImage": "assets/illustrations/misty-mountains/misty-023.webp",
+      "resultId": "EAGLE-01-FLIGHT",
+      "resultIcon": null,
+      "resultImage": "assets/illustrations/optional/eagle-flight.webp",
+      "resultPlaceholder": "assets/illustrations/hills.svg",
+      "choices": {
+        "accept": "Отправиться в полёт",
+        "decline": "Продолжить пешком"
+      },
+      "source": {
+        "sheet": "5. Мглистые горы",
+        "eventNumber": 23,
+        "optionalId": "EAGLE-01"
+      },
+      "resultTitle": "Полёт на орлах",
+      "arrivalEventId": "misty-027",
+      "arrivalSteps": 1286667,
+      "shortcutSteps": 46480,
+      "skippedEventIds": [
+        "misty-024",
+        "misty-025",
+        "misty-026"
+      ]
+    }
+  ]
+}
