@@ -120,6 +120,7 @@
       "resultId": "EAGLE-01-FLIGHT",
       "resultIcon": null,
       "resultImage": "assets/illustrations/optional/eagle-flight.webp",
+      "resultThumbnail": "assets/illustrations/optional/eagle-flight-thumb.webp",
       "resultPlaceholder": "assets/illustrations/hills.svg",
       "choices": {
         "accept": "Отправиться в полёт",
